@@ -76,7 +76,7 @@ const THEN_OPTIONS=[{id:"step",label:"Go one step stricter"},{id:"1",label:PS_AC
 const STAGES=["Risk Strategy & Exceptions","Claims Strategy","Review"];
 const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-let[step,setStep]=_.useState(0),[sub,setSub]=_.useState(0),[bands,setBands]=_.useState(()=>riskState.bands||DEFAULT_BANDS),[rules,setRules]=_.useState(DEFAULT_RULES),[activated,setActivated]=_.useState(false),[pendingTier,setPendingTier]=_.useState(()=>riskState.tier==="scoring"?"scoring":"guarantee"),[sample,setSample]=_.useState(0);
+let[step,setStep]=_.useState(0),[sub,setSub]=_.useState(0),[bands,setBands]=_.useState(()=>riskState.bands||DEFAULT_BANDS),[rules,setRules]=_.useState(DEFAULT_RULES),[activated,setActivated]=_.useState(false),[pendingTier,setPendingTier]=_.useState(()=>riskState.tier==="scoring"?"scoring":"guarantee");
 let claims=useCsClaims(),snapshot=JSON.stringify({b:bands,r:rules,c:claims}),[baseline,setBaseline]=_.useState(snapshot),dirty=snapshot!==baseline;
 
 const goTo=(index,s)=>{setStep(index);setSub(s||0);window.scrollTo(0,0)};
@@ -87,11 +87,12 @@ const toggleSku=skuId=>setRules(r=>{let current=r.sku.skus||[];let next=current.
 const activeCount=ids=>ids.filter(id=>rules[id].on).length;
 const confirmProduct=t=>{setBands(DEFAULT_BANDS);setRules(DEFAULT_RULES);setStep(0);setSub(0);setActivated(false);onRiskChange({tier:t,bands:DEFAULT_BANDS})};
 
-// Live preview: share of orders per action, from the band estimates; a new sample shifts the mix slightly.
-const jitter=[[0,0,0],[2,-1,-1],[-2,1,1],[1,1,-2],[-1,-2,3]][sample%5];
-const bandPct={confidence:ESTIMATES.confidence.estPct+jitter[0],moderate:ESTIMATES.moderate.estPct+jitter[1],risk:ESTIMATES.risk.estPct+jitter[2]};
-const dist=PS_ACTIONS.map((a,i)=>({label:a.label,pct:BANDS.reduce((sum,band)=>sum+(bands[band.id].actionIdx===i?bandPct[band.id]:0),0)}));
+// Forecast action volumes from the estimated monthly order mix.
+const monthlyOrders=BANDS.reduce((sum,band)=>sum+ESTIMATES[band.id].estMonthly,0);
+const bandPct={confidence:Math.round(ESTIMATES.confidence.estMonthly/monthlyOrders*100),moderate:Math.round(ESTIMATES.moderate.estMonthly/monthlyOrders*100),risk:Math.round(ESTIMATES.risk.estMonthly/monthlyOrders*100)};
+const dist=PS_ACTIONS.map((a,i)=>({label:a.label,orders:BANDS.reduce((sum,band)=>sum+(bands[band.id].actionIdx===i?ESTIMATES[band.id].estMonthly:0),0),pct:BANDS.reduce((sum,band)=>sum+(bands[band.id].actionIdx===i?bandPct[band.id]:0),0)}));
 const adjusted=Object.keys(RULE_IMPACT).reduce((sum,id)=>sum+(rules[id].on?RULE_IMPACT[id]:0),0);
+const adjustedOrders=Math.round(monthlyOrders*adjusted/100);
 
 const thenSelect=(id)=>S.jsx(tS,{label:"Then",options:THEN_OPTIONS,isDisabled:!rules[id].on,value:String(rules[id].act),onChange:v=>updateRule(id,{act:v==="step"?"step":Number(v)})});
 const EXC_ORDER=["trusted","newcust","value","sku","address","identity","device","payment"];
@@ -135,10 +136,11 @@ S.jsx("p",{className:"cs-text",children:dirty?"Your protection is active. Save t
 }
 
 const preview=S.jsxs("aside",{className:"cs-stack cs-aside","aria-label":"Live preview",children:[
-S.jsx(Ib,{header:S.jsx(K,{type:"default",level:3,icon:"trending_up",title:"Live Preview",description:"200 sample orders like yours"}),children:S.jsxs("div",{className:"cs-stack",children:[
-S.jsx(_y,{divided:!0,items:dist.map(d=>({term:d.label,value:d.pct+"%"}))}),
-S.jsx("p",{className:"cs-meta",children:"Exceptions adjust about "+adjusted+"% of orders."}),
-S.jsx("div",{className:"cs-row",children:S.jsx(Wv,{variant:"tertiary",size:"small",leadingIcon:S.jsx(W,{name:"refresh",size:16}),onPress:()=>setSample(x=>x+1),children:"New Sample"})})]})}),
+S.jsx(Ib,{header:S.jsx(K,{type:"default",level:3,icon:"trending_up",title:"Estimated monthly impact",description:"Based on "+monthlyOrders.toLocaleString("en-US")+" estimated orders"}),children:S.jsxs("div",{className:"cs-stack",children:[
+S.jsx("p",{className:"cs-text-strong",children:"How orders will be handled"}),
+S.jsx(_y,{divided:!0,items:dist.map(d=>({term:d.label,value:d.orders.toLocaleString("en-US")+" / month ("+d.pct+"%)"}))}),
+S.jsx("p",{className:"cs-meta",children:"Active exceptions may change the action for about "+adjustedOrders.toLocaleString("en-US")+" orders/month ("+adjusted+"%)."}),
+S.jsx("p",{className:"cs-meta",children:"Illustrative forecast from estimated band volumes; order-value thresholds aren't modeled."})]})}),
 S.jsx(Ib,{header:S.jsx(K,{type:"default",level:3,icon:"info",title:"How Recommendations Work"}),children:S.jsx("ul",{className:"cs-list",children:[["info","Score combines identity, device, payment and delivery signals."],["check_circle","Each band recommends an action your team can override at any time."],["visibility_off","Customers never see an internal CommerceShield score."]].map(([ic,t])=>S.jsxs("li",{children:[S.jsx(W,{name:ic,size:16}),t]},ic))})})]});
 
 const riPicker=S.jsxs(mx,{label:"Choose your Risk Intelligence plan",hideLabel:!0,value:pendingTier,onChange:setPendingTier,children:[S.jsx(hx,{value:"scoring",title:"Risk Scoring",description:"A risk score on every order so your team can decide what to do. Best for visibility without automated actions.",media:S.jsx("span",{className:"cs-media",children:S.jsx(Uj,{illustration:"fraud-prevented",size:"fill",ground:"none",reduced:reduced})})}),S.jsx(hx,{value:"guarantee",title:"Chargeback Guarantee (Recommended)",description:"Risk scores plus claim eligibility on chargebacks for orders scoring 700+. Best for automated protection.",media:S.jsx("span",{className:"cs-media",children:S.jsx(Uj,{illustration:"claim-to-coins",size:"fill",ground:"none",reduced:reduced})})})]});
