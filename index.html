@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Multi-Factor Authentication</title>
+    <title>CommerceShield | Order Risk Intelligence</title>
     <!-- Same font load as the Momentum Storybook (apps/docs/.storybook/preview-head.html); Momentum font/base is Roboto Flex. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,6 +16,70 @@
     <link rel="stylesheet" href="./assets/cs-momentum.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div class="cs-marketing" id="cs-marketing">
+      <header class="cs-marketing-header">
+        <a class="cs-marketing-brand" href="#top" aria-label="CommerceShield home">
+          <img src="./assets/ups-logo-y2dP_cOB.png" alt="" />
+          <span>CommerceShield</span>
+        </a>
+        <nav class="cs-marketing-nav" aria-label="Main navigation">
+          <a href="#cs-how-it-works">How it works</a>
+          <button class="cs-marketing-signin" type="button" data-enter-preview>Sign in</button>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section class="cs-marketing-hero" aria-labelledby="cs-marketing-title">
+          <div class="cs-marketing-hero-inner">
+            <p class="cs-marketing-eyebrow">ORDER RISK, MADE ACTIONABLE</p>
+            <h1 id="cs-marketing-title">Make the next move obvious.</h1>
+            <p class="cs-marketing-lead">CommerceShield turns order signals into a risk score, then maps that score to the right response: move ahead, add a check, or send it for review.</p>
+            <div class="cs-marketing-actions">
+              <button class="cs-marketing-primary" type="button" data-enter-preview>Enter the preview</button>
+              <a class="cs-marketing-secondary" href="#cs-how-it-works">How it works</a>
+            </div>
+            <figure class="cs-marketing-art">
+              <img src="./assets/order-value-C_F4kLzv.png" alt="Illustration of a shipping parcel and coins" />
+              <figcaption>One strategy. Clear decisions from cart to shipment.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="cs-marketing-how" id="cs-how-it-works" aria-labelledby="cs-how-title">
+          <div class="cs-marketing-section-heading">
+            <p class="cs-marketing-eyebrow">A PRACTICAL RISK WORKFLOW</p>
+            <h2 id="cs-how-title">From signal to shipment.</h2>
+          </div>
+          <div class="cs-marketing-steps">
+            <article class="cs-marketing-step">
+              <span class="cs-marketing-step-number">01</span>
+              <h3>Score the signals</h3>
+              <p>Bring identity, device, payment, and delivery indicators into one clear order-risk view.</p>
+            </article>
+            <article class="cs-marketing-step">
+              <span class="cs-marketing-step-number">02</span>
+              <h3>Choose the response</h3>
+              <p>Set which orders move ahead, get an extra check, route to pickup, or pause for review.</p>
+            </article>
+            <article class="cs-marketing-step">
+              <span class="cs-marketing-step-number">03</span>
+              <h3>Keep people in control</h3>
+              <p>Shape exceptions and claim handling around the way your business actually operates.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="cs-marketing-close" aria-labelledby="cs-close-title">
+          <div>
+            <p class="cs-marketing-eyebrow">COMMERCE, WITH MORE CLARITY</p>
+            <h2 id="cs-close-title">See your risk strategy in action.</h2>
+          </div>
+          <button class="cs-marketing-close-button" type="button" data-enter-preview>Continue to the preview</button>
+        </section>
+      </main>
+      <footer class="cs-marketing-footer">CommerceShield <span>Product preview</span></footer>
+    </div>
+    <div id="root" hidden></div>
+    <script type="module" src="./assets/cs-marketing.js"></script>
   </body>
 </html>

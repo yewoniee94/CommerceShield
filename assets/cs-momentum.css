@@ -109,6 +109,89 @@
 .cs-list { display: flex; flex-direction: column; gap: var(--m-space-2); margin: 0; padding: 0; list-style: none; }
 .cs-list li { display: flex; align-items: flex-start; gap: var(--m-space-2); font: var(--m-typography-body-sm); color: var(--m-color-ink-medium); }
 
+/* Public introduction shown before the password-protected preview. */
+#root[hidden] { display: none !important; }
+.cs-marketing {
+  --cs-public-ink: #173431;
+  --cs-public-muted: #526966;
+  --cs-public-paper: #f3f7f4;
+  --cs-public-teal: #0c6662;
+  --cs-public-gold: #f3c33c;
+  min-block-size: 100vh;
+  background: var(--cs-public-paper);
+  color: var(--cs-public-ink);
+  font-family: "Roboto Flex", sans-serif;
+}
+.cs-marketing-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--m-space-4);
+  max-inline-size: 80rem;
+  margin-inline: auto;
+  padding: var(--m-space-4) var(--m-space-6);
+}
+.cs-marketing-brand { display: inline-flex; align-items: center; gap: var(--m-space-3); color: inherit; text-decoration: none; font-size: 1.125rem; font-weight: 700; }
+.cs-marketing-brand img { inline-size: 2rem; block-size: 2rem; object-fit: contain; }
+.cs-marketing-nav { display: flex; align-items: center; gap: var(--m-space-5); }
+.cs-marketing-nav a, .cs-marketing-secondary { color: var(--cs-public-ink); font-size: .9375rem; font-weight: 600; text-decoration: none; }
+.cs-marketing-nav a:hover, .cs-marketing-secondary:hover { color: var(--cs-public-teal); text-decoration: underline; text-underline-offset: .25rem; }
+.cs-marketing-signin { padding: .65rem 1rem; border: 1px solid #bdcbc6; border-radius: .35rem; background: transparent; color: var(--cs-public-ink); font: inherit; font-size: .9375rem; font-weight: 650; cursor: pointer; }
+.cs-marketing-signin:hover { border-color: var(--cs-public-teal); color: var(--cs-public-teal); }
+.cs-marketing-hero {
+  overflow: hidden;
+  border-block: 1px solid #dce6e1;
+  background-color: #e8f0ec;
+  background-image: linear-gradient(#1734310a 1px, transparent 1px), linear-gradient(90deg, #1734310a 1px, transparent 1px);
+  background-size: 3rem 3rem;
+  text-align: center;
+}
+.cs-marketing-hero-inner { max-inline-size: 76rem; margin-inline: auto; padding: 4.5rem var(--m-space-6) 2.5rem; }
+.cs-marketing-eyebrow { margin: 0; color: var(--cs-public-teal); font-size: .75rem; font-weight: 750; line-height: 1.4; letter-spacing: .08em; }
+.cs-marketing-hero h1 { max-inline-size: 15ch; margin: 1rem auto 1.1rem; color: var(--cs-public-ink); font-size: 4rem; font-weight: 720; line-height: 1.02; letter-spacing: 0; }
+.cs-marketing-lead { max-inline-size: 52rem; margin: 0 auto; color: var(--cs-public-muted); font-size: 1.2rem; line-height: 1.55; }
+.cs-marketing-actions { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: var(--m-space-5); margin-block-start: 1.75rem; }
+.cs-marketing-primary, .cs-marketing-close-button { min-block-size: 3rem; padding: .75rem 1.25rem; border: 0; border-radius: .35rem; background: var(--cs-public-teal); color: #fff; font: inherit; font-size: .95rem; font-weight: 700; cursor: pointer; }
+.cs-marketing-primary:hover, .cs-marketing-close-button:hover { background: #084e4b; }
+.cs-marketing-art { display: flex; flex-direction: column; align-items: center; gap: .25rem; margin: 1.25rem 0 0; animation: cs-marketing-arrive 650ms cubic-bezier(.2,.7,.25,1) both; }
+.cs-marketing-art img { display: block; inline-size: 17rem; block-size: 13.5rem; object-fit: contain; mix-blend-mode: multiply; }
+.cs-marketing-art figcaption { color: var(--cs-public-muted); font-size: .8125rem; font-weight: 600; }
+.cs-marketing-how { max-inline-size: 80rem; margin-inline: auto; padding: 4rem var(--m-space-6) 4.5rem; }
+.cs-marketing-section-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: var(--m-space-4); margin-block-end: 2.25rem; }
+.cs-marketing-section-heading h2, .cs-marketing-close h2 { margin: 0; color: var(--cs-public-ink); font-size: 2.2rem; font-weight: 680; line-height: 1.15; letter-spacing: 0; }
+.cs-marketing-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-block-start: 1px solid #bdcbc6; }
+.cs-marketing-step { min-inline-size: 0; padding: 1.4rem 1.5rem 0 0; }
+.cs-marketing-step + .cs-marketing-step { padding-inline-start: 1.5rem; border-inline-start: 1px solid #bdcbc6; }
+.cs-marketing-step-number { color: #a76b16; font-size: .8125rem; font-weight: 750; }
+.cs-marketing-step h3 { margin: .8rem 0 .45rem; color: var(--cs-public-ink); font-size: 1.2rem; font-weight: 700; line-height: 1.25; }
+.cs-marketing-step p { max-inline-size: 32ch; margin: 0; color: var(--cs-public-muted); font-size: .9375rem; line-height: 1.55; }
+.cs-marketing-close { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; padding: 2.25rem max(var(--m-space-6), calc((100vw - 80rem) / 2)); background: #173431; color: #fff; }
+.cs-marketing-close .cs-marketing-eyebrow { margin-block-end: .6rem; color: var(--cs-public-gold); }
+.cs-marketing-close h2 { color: #fff; }
+.cs-marketing-close-button { flex: 0 0 auto; background: var(--cs-public-gold); color: #173431; }
+.cs-marketing-close-button:hover { background: #ffd86a; }
+.cs-marketing-footer { display: flex; justify-content: space-between; gap: 1rem; max-inline-size: 80rem; margin-inline: auto; padding: 1.25rem var(--m-space-6); color: var(--cs-public-ink); font-size: .8125rem; font-weight: 650; }
+.cs-marketing-footer span { color: var(--cs-public-muted); font-weight: 450; }
+@keyframes cs-marketing-arrive { from { opacity: 0; transform: translateY(1rem); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 700px) {
+  .cs-marketing-header { padding-inline: var(--m-space-4); }
+  .cs-marketing-nav { gap: var(--m-space-3); }
+  .cs-marketing-nav a { display: none; }
+  .cs-marketing-hero-inner { padding: 3.5rem var(--m-space-4) 2rem; }
+  .cs-marketing-hero h1 { max-inline-size: 12ch; font-size: 2.75rem; }
+  .cs-marketing-lead { font-size: 1.05rem; }
+  .cs-marketing-how { padding: 3rem var(--m-space-4); }
+  .cs-marketing-section-heading { display: block; }
+  .cs-marketing-section-heading h2 { margin-block-start: .65rem; font-size: 1.8rem; }
+  .cs-marketing-steps { grid-template-columns: minmax(0, 1fr); }
+  .cs-marketing-step, .cs-marketing-step + .cs-marketing-step { padding: 1.2rem 0; border-inline-start: 0; border-block-end: 1px solid #bdcbc6; }
+  .cs-marketing-step:last-child { border-block-end: 0; }
+  .cs-marketing-close { align-items: flex-start; flex-direction: column; padding: 2rem var(--m-space-4); }
+  .cs-marketing-close h2 { font-size: 1.8rem; }
+  .cs-marketing-footer { padding-inline: var(--m-space-4); }
+}
+@media (prefers-reduced-motion: reduce) { .cs-marketing-art { animation: none; } }
+
 /* Compact Workspace-style app chrome, keeping the Momentum components and tokens. */
 .m-bar-rWZ5SS[data-appearance="suite"] {
   min-block-size: calc(var(--m-space-8) + var(--m-space-2));
